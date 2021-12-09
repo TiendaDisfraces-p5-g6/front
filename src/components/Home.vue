@@ -1,16 +1,21 @@
 <template>
 
     <div class="greetings">
-        <h1>¡Bienvenido  <span> {{username}} </span>!</h1>
+        <Prendas/>
     </div>
 
 </template>
 
 
 <script>
+import Prendas from './inventario.vue'
 
 export default {
     name: "Home",
+
+    components:{
+        Prendas
+        },
 
     data: function(){
         return {
@@ -34,13 +39,5 @@ export default {
         align-items: center;
     }
 
-    .greetings h1{
-        font-size: 50px;
-        color: #283747;
-    }
-
-    .greetings span{
-        color: crimson;
-        font-weight: bold;
-    }
+  
 </style>

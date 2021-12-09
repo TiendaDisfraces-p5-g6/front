@@ -10,13 +10,12 @@
 
       <div id="menu">
         <center>
-           <router-link to="/tabla" id="linknav" v-if="is_auth">Pedidos</router-link>|
-           <router-link to="/censoIndigena" id="linknav">Dizfraces</router-link>|
-           <router-link to="/" id="linknav">Compras</router-link>
+           <router-link to="/user/pedidos" id="linknav" v-if="is_auth">Pedidos</router-link>|
+           <router-link to="/user/home" id="linknav">Dizfraces</router-link>|
+           <router-link to="/" id="linknav" v-if="is_auth">Compras</router-link>
         </center>
      </div>
        <div><button v-if="is_auth" v-on:click="loadHome"> Inicio </button>
-        <button v-if="is_auth" v-on:click="loadAccount"> Cuenta </button>
         <button v-if="is_auth" v-on:click="logOut"> Cerrar Sesión </button>
         <button v-if="!is_auth" v-on:click="loadLogIn" > Iniciar Sesión </button>
         <button v-if="!is_auth" v-on:click="loadSignUp" > Registrarse </button></div>
@@ -35,7 +34,7 @@
     
 
     <div class="footer">
-      <h2>Misión TIC 2022</h2>
+      <h2>Grupo 5</h2>
     </div>
 
   </div>
@@ -50,7 +49,7 @@ export default {
 
   data: function(){
       return{
-        is_auth: false
+        is_auth: true
       }
   },
 
@@ -80,12 +79,12 @@ export default {
 			localStorage.setItem("username", data.username);
 			localStorage.setItem("token_access", data.token_access);
 			localStorage.setItem("token_refresh", data.token_refresh);
-			alert("Autenticación Exitosa");
+			alert("Autenticad@");
 			this.verifyAuth();
     },
 
     completedSignUp: function(data) {
-			alert("Registro Exitoso");
+			alert("Registrad@");
 			this.completedLogIn(data);
     },
 
@@ -160,7 +159,7 @@ export default {
     color: #E5E7E9;
     background: #5aa2f0;
     border: 1px solid #E5E7E9;
-    
+    margin-left: 5px;
     border-radius: 5px;
     padding: 10px 20px;
   }

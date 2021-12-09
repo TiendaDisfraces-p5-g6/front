@@ -4,10 +4,13 @@ import App from './App.vue';
 import LogIn from './components/LogIn.vue'
 import SignUp from './components/SignUp.vue'
 import Home from './components/Home.vue'
-import Account from './components/Account.vue'
+import Pedidos from './components/pedidos.vue'
 
 
-const routes = [{
+
+const routes = [
+  
+    {
         path: '/',
         name: 'root',
         component: App
@@ -28,9 +31,9 @@ const routes = [{
         component: Home
     },
     {
-        path: '/user/account',
-        name: "account",
-        component: Account
+        path: '/user/pedidos',
+        name: "Pedidos",
+        component: Pedidos
     }
 ];
 

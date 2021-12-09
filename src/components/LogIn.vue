@@ -9,7 +9,10 @@
                 <br>
                 <input type="password" v-model="user.password" placeholder="Password">
                 <br>
-                <button type="submit">Iniciar Sesion</button>
+                <center>
+                    <button type="submit">Iniciar Sesion</button>
+                </center>
+                
             </form>
         </div>
 
@@ -21,8 +24,7 @@
 
 
 <script>
-import axios from 'axios';
-
+import gql from 'graphql-tag'
 export default {
     name: "LogIn",
 
@@ -36,28 +38,35 @@ export default {
     },
 
     methods: {
-        processLogInUser: function(){
-            axios.post(
-                "https://mision-tic-bank-be.herokuapp.com/login/", 
-                this.user,  
-                {headers: {}}
-                )
-                .then((result) => {
-                    let dataLogIn = {
-                        username: this.user.username,
-                        token_access: result.data.access,
-                        token_refresh: result.data.refresh,
+        processLogInUser: async function(){
+          await this.$apollo.mutate(
+                {
+                    mutation: gql`
+                        mutation RegistroUsuario($logInCredenciales: CredencialesIngreso!) {
+                          logIn(credenciales: $logInCredenciales) {
+                               refresh
+                               access
+                            }
+                        }
+                    `,
+                    variables:{
+                        logInCredenciales:this.user,
                     }
-                    
-                    this.$emit('completedLogIn', dataLogIn)
-                })
-                .catch((error) => {
-                    
-                    if (error.response.status == "401")
-                        alert("ERROR 401: Credenciales Incorrectas.");
-                    
-                });
-        }
+                }   
+            )
+            .then((result)=>{
+                let dataSignUp = {
+                    tekenRefresh : result.data.logIn.refresh,
+                    tokenAccess  : result.data.logIn.accsess
+                };
+
+                this.$emit("completedLogIn" , dataSignUp  )
+            })
+            .catch((error)=>{
+                console.log(error);
+                alert("fallo en el registro")
+        })
+       }
     }
 }
 </script>
@@ -105,7 +114,6 @@ export default {
     .logIn_user input{
         height: 40px;
         width: 100%;
-
         box-sizing: border-box;
         padding: 10px 20px;
         margin: 5px 0;
@@ -114,11 +122,11 @@ export default {
     }
 
     .logIn_user button{
-        width: 100%;
+        width: 50%;
         height: 40px;
 
         color: #E5E7E9;
-        background: #283747;
+        background: #1c82f0;
         border: 1px solid #E5E7E9;
 
         border-radius: 5px;
@@ -127,8 +135,8 @@ export default {
     }
 
     .logIn_user button:hover{
-        color: #E5E7E9;
-        background: crimson;
+        color: #060708;
+        background: rgb(245, 237, 239);
         border: 1px solid #283747;
     }
 

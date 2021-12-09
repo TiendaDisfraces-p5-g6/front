@@ -5,6 +5,7 @@
             <h2>Registrarse</h2>
 
             <form v-on:submit.prevent="processSignUp" >
+
                 <input type="text" v-model="user.username" placeholder="Username">
                 <br>
                 
@@ -17,10 +18,13 @@
                 <input type="email" v-model="user.email" placeholder="Email">
                 <br>
 
-                <input type="number" v-model="user.account.balance" placeholder="Initial Balance">
-                <br>
+                <input type="number" v-model="user.phone" placeholder=" phone">
+                 <br>
 
-                <button type="submit">Registrarse</button>
+                 <center>
+                     <button type="submit">Registrarse</button>
+                 </center>
+                
             </form>
         </div>
 
@@ -32,48 +36,53 @@
 
 
 <script>
-import axios from 'axios';
-
+import gql from 'graphql-tag'
 export default {
     name: "SignUp",
 
     data: function(){
         return {
             user: {
-                username: "",
-                password: "",
-                name: "",
-                email: "",
-                account: {
-                    lastChangeDate: (new Date()).toJSON().toString(),
-                    balance: 0,
-                    isActive: true
-                }
+                username         : "",
+                password         : "",
+                name             : "",
+                phone            : "",
+                email            : "",
+                prendasAlquiladas: 0
             }
         }
     },
 
     methods: {
-        processSignUp: function(){
-            axios.post(
-                "https://mision-tic-bank-be.herokuapp.com/user/", 
-                this.user,  
-                {headers: {}}
-            )
-                .then((result) => {
-                    let dataSignUp = {
-                        username: this.user.username,
-                        token_access: result.data.access,
-                        token_refresh: result.data.refresh,
+        processSignUp: async function(){
+            await this.$apollo.mutate(
+                {
+                    mutation: gql`
+                        mutation RegistroUsuario($registroUsuarioEntradaUsuario: RegistroIngreso) {
+                            registroUsuario(entradaUsuario: $registroUsuarioEntradaUsuario) {
+                                refresh
+                                access
+                            }
+                        }
+                    `,
+                    variables:{
+                        registroUsuarioEntradaUsuario:this.user,
                     }
-                    
-                    this.$emit('completedSignUp', dataSignUp)
-                })
-                .catch((error) => {
-                    console.log(error)
-                    alert("ERROR: Fallo en el registro.");  
-                });
-        }
+                }   
+            )
+            .then((result)=>{
+                let dataSignUp = {
+                    tekenRefresh : result.data.registroUsuario.refresh,
+                    tokenAccess  : result.data.registroUsuario.accsess
+                };
+
+                this.$emit("completedSignUp" , dataSignUp  )
+            })
+            .catch((error)=>{
+                console.log(error);
+                alert("fallo en el registro")
+            })
+       }
     }
 }
 </script>
@@ -130,11 +139,11 @@ export default {
     }
 
     .signUp_user button{
-        width: 100%;
+        width: 50%;
         height: 40px;
 
         color: #E5E7E9;
-        background: #283747;
+        background: #1c82f0;
         border: 1px solid #E5E7E9;
 
         border-radius: 5px;
@@ -143,8 +152,8 @@ export default {
     }
 
     .signUp_user button:hover{
-        color: #E5E7E9;
-        background: crimson;
+        color: #050607;
+        background: rgb(241, 233, 234);
         border: 1px solid #283747;
     }
 
