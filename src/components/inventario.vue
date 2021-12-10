@@ -3,7 +3,7 @@
 <div>
     <center>
      <div class="Pedidos">
-       <center><button class="pedidos-button"> + Realizar pedido perzonalizado</button></center>
+       <center><button class="pedidos-button"> + Realizar pedido personalizado</button></center>
         
     </div>
     <div class="prenda-container">

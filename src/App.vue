@@ -6,12 +6,14 @@
       <nav>
       <div>
         <h1> Tienda disfraces </h1>
+        <div></div>
+
       </div>
 
       <div id="menu">
         <center>
            <router-link to="/user/pedidos" id="linknav" v-if="is_auth">Pedidos</router-link>|
-           <router-link to="/user/home" id="linknav">Dizfraces</router-link>|
+           <router-link to="/user/home" id="linknav">Disfraces</router-link>|
            <router-link to="/" id="linknav" v-if="is_auth">Alquilados</router-link>
         </center>
      </div>
@@ -80,8 +82,8 @@ export default {
     completedLogIn: function(data) {
 			localStorage.setItem("isAuth", true);
 			localStorage.setItem("username", data.username);
-			localStorage.setItem("token_access", data.token_access);
-			localStorage.setItem("token_refresh", data.token_refresh);
+			localStorage.setItem("token_access", data.tokenAccess);
+			localStorage.setItem("token_refresh", data.tokenRefresh);
 			alert("Autenticad@");
 			this.verifyAuth();
     },

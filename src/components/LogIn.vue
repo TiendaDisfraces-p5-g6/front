@@ -56,7 +56,8 @@ export default {
             )
             .then((result)=>{
                 let dataSignUp = {
-                    tekenRefresh : result.data.logIn.refresh,
+                    username     : this.user.username,
+                    tokenRefresh : result.data.logIn.refresh,
                     tokenAccess  : result.data.logIn.accsess
                 };
 
