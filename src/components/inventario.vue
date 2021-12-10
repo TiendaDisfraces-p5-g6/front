@@ -17,7 +17,6 @@
             </div>
              <div class = "prenda-detalle">
               <div><h1>Tipo:{{detallePrenda.tipoPrenda}}</h1></div>
-              <div><h1>Disponibles:{{detallePrenda.cantidad}}</h1></div>
               <div><h1>Descripcion:{{detallePrenda.descripcion}}</h1></div>
               <div><h1>Precio:{{detallePrenda.precio}}</h1></div>
               </div>

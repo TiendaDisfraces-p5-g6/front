@@ -12,10 +12,11 @@
         <center>
            <router-link to="/user/pedidos" id="linknav" v-if="is_auth">Pedidos</router-link>|
            <router-link to="/user/home" id="linknav">Dizfraces</router-link>|
-           <router-link to="/" id="linknav" v-if="is_auth">Compras</router-link>
+           <router-link to="/" id="linknav" v-if="is_auth">Alquilados</router-link>
         </center>
      </div>
-       <div><button v-if="is_auth" v-on:click="loadHome"> Inicio </button>
+       <div>
+         <button v-if="is_auth" v-on:click="loadHome"> Inicio </button>
         <button v-if="is_auth" v-on:click="logOut"> Cerrar Sesión </button>
         <button v-if="!is_auth" v-on:click="loadLogIn" > Iniciar Sesión </button>
         <button v-if="!is_auth" v-on:click="loadSignUp" > Registrarse </button></div>
@@ -49,6 +50,8 @@ export default {
 
   data: function(){
       return{
+        username : localStorage.getItem('username') || "none",
+        pedidos: [],
         is_auth: true
       }
   },

@@ -92,9 +92,8 @@ export default {
     .container_logIn_user {
         border: 1px solid  #c3cedb;
         border-radius: 10px;
-        width: 25%;
+        width: 20%;
         height: 60%;
-        
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -117,8 +116,11 @@ export default {
         box-sizing: border-box;
         padding: 10px 20px;
         margin: 5px 0;
-
-        border: 1px solid #283747;
+        border-bottom: 1px solid #768da5;
+        border-left: white;
+        border-right: white;
+        border-top: white;
+       
     }
 
     .logIn_user button{
@@ -128,13 +130,14 @@ export default {
         color: #E5E7E9;
         background: #1c82f0;
         border: 1px solid #E5E7E9;
-
         border-radius: 5px;
         padding: 10px 25px;
         margin: 5px 0;
+        margin-top: 50px;
     }
 
     .logIn_user button:hover{
+        
         color: #060708;
         background: rgb(245, 237, 239);
         border: 1px solid #283747;
