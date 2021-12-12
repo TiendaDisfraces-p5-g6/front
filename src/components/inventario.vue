@@ -1,10 +1,10 @@
 <template>
 
 <div>
+   
     <center>
      <div class="Pedidos">
-       <center><button class="pedidos-button"> + Realizar pedido personalizado</button></center>
-        
+       <center><button v-if="is_auth" v-on:click="abrir" type ="checkbox" class="pedidos-button"> + Realizar pedido personalizado</button></center>
     </div>
     <div class="prenda-container">
    
@@ -36,11 +36,15 @@
 
 <script>
 import gql  from "graphql-tag";
+
 export default {
     name: "Prendas",
+   
     
     data: function(){
         return {
+
+             is_auth : localStorage.getItem("isAuth"),
              detallePrenda:{
                 id: "",
                 tipoPrenda:"",
@@ -75,9 +79,9 @@ export default {
     },
 
     methods:{
-        detallePrendas:function (){
-  
-        }
+        abrir: function() {
+         document.getElementById("modal").style.display = "flex";
+         }
     }
   
 }
