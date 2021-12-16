@@ -58,7 +58,7 @@ export default {
                 let dataSignUp = {
                     username     : this.user.username,
                     tokenRefresh : result.data.logIn.refresh,
-                    tokenAccess  : result.data.logIn.accsess
+                    tokenAccess  : result.data.logIn.access,
                 };
 
                 this.$emit("completedLogIn" , dataSignUp  )

@@ -14,11 +14,12 @@
         <center>
            <router-link to="/user/pedidos" id="linknav" v-if="is_auth">Pedidos</router-link>|
            <router-link to="/user/home" id="linknav">Disfraces</router-link>|
-           <router-link to="/" id="linknav" v-if="is_auth">Alquilados</router-link>
+           <router-link to="/user/alquilados" id="linknav" v-if="is_auth">Alquilados</router-link>
         </center>
      </div>
        <div>
-         <button v-if="is_auth" v-on:click="loadHome"> Inicio </button>
+        <button v-if="is_auth" v-on:click="loadUser"> {{username}} </button>
+        <button v-if="is_auth" v-on:click="loadHome"> Inicio </button>
         <button v-if="is_auth" v-on:click="logOut"> Cerrar Sesión </button>
         <button v-if="!is_auth" v-on:click="loadLogIn" > Iniciar Sesión </button>
         <button v-if="!is_auth" v-on:click="loadSignUp" > Registrarse </button></div>
@@ -37,7 +38,7 @@
     
 
     <div class="footer">
-      <h2>Grupo 5</h2>
+      <h2>Grupo 6</h2>
     </div>
 
   </div>
@@ -47,6 +48,7 @@
 
 
 <script>
+import gql  from "graphql-tag";
 export default {
   name: 'App',
 
@@ -54,7 +56,7 @@ export default {
       return{
         username : localStorage.getItem('username') || "none",
         pedidos: [],
-        is_auth: true
+        is_auth: false
       }
   },
 
@@ -80,12 +82,13 @@ export default {
     },
 
     completedLogIn: function(data) {
+      localStorage.setItem("username", data.username);
 			localStorage.setItem("isAuth", true);
-			localStorage.setItem("username", data.username);
 			localStorage.setItem("token_access", data.tokenAccess);
 			localStorage.setItem("token_refresh", data.tokenRefresh);
 			alert("Autenticad@");
 			this.verifyAuth();
+      location.reload();
     },
 
     completedSignUp: function(data) {
@@ -97,9 +100,29 @@ export default {
       this.$router.push({ name: "home" });
     },
 
+    loadUser: function() {
+      this.$router.push({ name: "Usuario" });
+    },
+
     loadAccount: function () {
 			this.$router.push({ name: "account" });
 		},
+
+    dataUsuario: async function() {
+      await this.$apollo.mutate({
+          mutation: gql`
+               mutation ActualizacionUsuario($usuario: ActualizarUsuario!) {
+                   actualizacionUsuario(usuario: $usuario) {
+                     id
+                     username
+                     name
+                     phone
+                     email
+                   }
+                 }`,variables:{}
+      
+      })
+    },
 
     logOut: function () {
 			localStorage.clear();
@@ -136,8 +159,8 @@ export default {
     height: 10vh; 
     min-height: 100px;
 
-    background-color: #f6f7f8 ;
-    color:#E5E7E9  ;
+    background-color: #072c52 ;
+    color:#0b335a  ;
 
     display: flex;
     justify-content: space-between;
@@ -147,7 +170,7 @@ export default {
   .header h1{
     width: 20%;
     text-align: center;
-    color: #020405;
+    color: #f7f7f7;
   }
 
   .header nav {
@@ -157,7 +180,7 @@ export default {
     justify-content: space-around;
     align-items: center;
     font-size: 20px;
-    color: #020405;
+    color: #efeff0;
   }
 
   .header nav button{
@@ -182,7 +205,7 @@ export default {
 
  #menu #linknav {
    position: relative;
-   color: #030608;
+   color: #f4f4f5;
    padding: 28px;
    letter-spacing: 1px;
    text-decoration: none;
@@ -217,7 +240,7 @@ export default {
    width: 100%;
    height: 10vh;
    min-height: 100px;  
-   background-color: #eff0f1;
+   background-color: #072c52;
    color: #020405;
 
   }

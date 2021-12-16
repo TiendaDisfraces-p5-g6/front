@@ -12,7 +12,7 @@
             {{pedido.nombrePrenda}} | 
             fechaPedido: {{pedido.fechaPedido.substring(0,10)}} | 
             talla : {{pedido.talla}} 
-            <button class="eliminar-traje">eliminar</button>
+            <button v-on:click="deletePedido(pedido.id)" class="eliminar-traje">eliminar</button>
         </center>
           
         
@@ -30,12 +30,14 @@
 
 
 <script>
+import jwt_decode from "jwt-decode"
 import gql  from "graphql-tag";
 export default {
     name: "Pedidos",
 
     data: function(){
         return {
+           
             username: localStorage.getItem("username") || "none",
             pedidoPorUsername:[]
         }
@@ -67,12 +69,27 @@ export default {
         },
 
     methods: {
-        created:function () {
+        created: async function () {
             this.$apollo.queries.pedidoPorUsername.refetch();
         },
 
-        verifyToken: function () {
-            
+        deletePedido: function (pedidoId) {
+             this.$apollo.mutate({
+                mutation: gql`
+                mutation BorrarPedido($pedidoId: String!) {
+                     borrarPedido(pedidoId: $pedidoId) {
+                         status
+                        }
+                   }`,variables:{
+                       pedidoId: pedidoId,
+                    }
+            }).then((result) => {
+                  alert("pedido eliminado con exito");
+                  this.$router.go(0);
+              }).catch((error) => {
+                  alert("hubo un error al eliminar el pedido");
+              });
+              
         }
     },
 

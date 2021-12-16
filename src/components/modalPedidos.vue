@@ -1,6 +1,6 @@
 <template>
 <div class="modal" id="modal">
-  <div class="container">
+  <div class="container" >
       <div>
           <div class="container-btn">
               <button v-on:click="cerrar" class="btn-close">X</button>
@@ -11,12 +11,25 @@
               </center>
          </div>
 
-         <div>
+         <div >
              <center>
-               <input type="text">
+               <input v-model="pedido.nombrePrenda" placeholder = "que prenda desea" type="text" Required>
+               <br>
+              <h4>seleccione su talla</h4>
+              <select
+              v-model="pedido.talla"
+              placeholder="Seleccione su talla" Required>
+              <option
+               v-for="talla of tallas"
+               :key="talla"
+               :value="talla">
+               {{talla}}
+             </option>
+             </select>
                <br>
                <br>
-               <input type="text">
+               <button  type="submit" v-on:click="setPedido" class="btn-pedido">crear</button>
+
              </center>
              
          </div>
@@ -31,10 +44,73 @@ import gql from 'graphql-tag'
 export default {
     name: "Modal",
 
+    data: function() {
+        return{
+           pedido:{
+                   fechaPedido: localStorage.getItem("fecha"),
+                   username: localStorage.getItem("username"),
+                   valor: 5000,
+                   fechaEntrega: localStorage.getItem("fecha"),
+                   nombrePrenda: "",
+                   talla: ""
+                  },
+
+                 tallas:[
+                "Xs","S", "L" ,"XL"
+                 ]
+          };
+    },
+
+    created: async function() {
+    this.getFecha();
+  },
+   
     methods:{
-      cerrar: function() {
+      cerrar: async function() {
          document.getElementById("modal").style.display = "none";
     },
+
+
+      setPedido: async function(){
+          await this.$apollo.mutate(
+              {
+                  mutation: gql`
+                   mutation CrearPedido($pedido: PedidoIngreso!) {
+                     crearPedido(pedido: $pedido) {
+                        username
+                        }
+                     }`,
+                   variables:{
+                     pedido : this.pedido
+                },
+
+              }).then((result) => {
+
+                  alert("pedido creado con exito");
+              }).catch((error) => {
+                  alert("hubo un error al crear su pedido");
+              });
+      },
+
+      getFecha: async function (){
+          let hoy = new Date();
+
+          let dia = hoy.getDate();
+          let mes = hoy.getMonth()+1;
+          let anio = hoy.getFullYear();
+          let diaEntrega = dia + 15;
+          let mesEntrega = mes;
+          if(diaEntrega > 30 )
+             diaEntrega = 0;
+             diaEntrega = (dia - 30) - 15;
+             mesEntrega = mesEntrega +1;
+         let fecha = `${anio}-${mes}-${dia}`;
+         let fechaEntrega = `${anio}-${mesEntrega}-${diaEntrega}`;
+         console.log(fecha)
+         console.log(fechaEntrega)
+        localStorage.setItem("fecha" , fecha);
+        localStorage.setItem("fechaEntrega" , fechaEntrega)
+      } 
     }
 }
 </script>
@@ -66,7 +142,7 @@ export default {
 }
 
 @-webkit-keyframes modal {
-    from {top: -90px; opacity:1;}
+    from {top: -90px; opacity:0;}
     to   {top:0; opacity:1}
 }
 
@@ -103,5 +179,18 @@ export default {
 
 .btn-close:hover{
     color: rgb(238, 10, 10);
+}
+
+.btn-pedido{
+  border-radius: 8px;
+  width: 80px;
+  height: 40px;
+  background-color:rgb(171, 243, 177);
+  font-size: 20px;
+  border: 1px solid rgb(248, 247, 247);
+}
+
+.btn-pedido:hover{
+  background-color:#16c71f;
 }
 </style>

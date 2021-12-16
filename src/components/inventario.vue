@@ -36,7 +36,6 @@
 
 <script>
 import gql  from "graphql-tag";
-
 export default {
     name: "Prendas",
    
@@ -81,7 +80,13 @@ export default {
     methods:{
         abrir: function() {
          document.getElementById("modal").style.display = "flex";
-         }
+         },
+
+        crearPedido: async function(){
+            await this.$apollo.mutate({
+                
+            })
+        } 
     }
   
 }
@@ -116,7 +121,7 @@ export default {
 }
 
 .prenda:hover{
-   background-color: rgb(231, 249, 250);
+   background-color: rgb(239, 240, 243);
 }
 
 .prenda-detalle{

@@ -13,7 +13,7 @@ const authLink = setContext((_, {headers}) => {
     return {
         headers:{
             ...headers,
-            "Authorization": localStorage.getItem("tokenAccess") || ""
+            "Authorization": localStorage.getItem("token_refresh") || ""
         }
     }
 
@@ -26,7 +26,6 @@ const apolloClient = new ApolloClient({
 
 const apolloProvider = new createApolloProvider({
     defaultClient: apolloClient
-})
-
+});
 
 createApp(App).use(router).use(apolloProvider).mount('#app')
